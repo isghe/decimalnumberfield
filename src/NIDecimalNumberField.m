@@ -60,8 +60,7 @@ static const CGFloat kCaretWidth = 2; // Should this be variable based on the fo
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithFrame:(CGRect)frame {
-  if ((self = [super initWithFrame:frame])) {
+- (void) commonInit{
     self.backgroundColor = [UIColor whiteColor];
 
     // Properties Affecting Display
@@ -98,6 +97,16 @@ static const CGFloat kCaretWidth = 2; // Should this be variable based on the fo
 
     // Handle locale changes so that we react to autoupdatingCurrentLocale changing from under us.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentLocaleDidChangeNotification:) name:NSCurrentLocaleDidChangeNotification object:nil];
+
+}
+
+- (void) awakeFromNib{
+    [self commonInit];
+}
+
+- (id)initWithFrame:(CGRect)frame {
+  if ((self = [super initWithFrame:frame])) {
+      [self commonInit];
   }
   return self;
 }
