@@ -16,8 +16,6 @@
 
 #import "NIDecimalNumberField.h"
 
-#import "NimbusCore.h"
-
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "NimbusKit requires ARC support."
 #endif
@@ -434,6 +432,18 @@ static const CGFloat kCaretWidth = 2; // Should this be variable based on the fo
   return _displayString;
 }
 
+static CGFloat IGCenter (const CGFloat container, const CGFloat content){
+    return floorf ((container - content)/2.f);
+}
+
+static CGFloat IGCenterX (const CGSize container, const CGSize content){
+    return IGCenter (container.width, content.width);
+}
+
+static CGFloat IGCenterY (const CGSize container, const CGSize content){
+    return IGCenter (container.height, content.height);
+}
+
 - (void)calculateFontForDisplayMetrics:(NIDecimalNumberFieldDisplayMetrics *)metrics {
   // Calculate the scaled font size.
   NSMutableDictionary* attributes = [[self attributesForText] mutableCopy];
@@ -460,13 +470,13 @@ static const CGFloat kCaretWidth = 2; // Should this be variable based on the fo
   if (_textAlignment == NSTextAlignmentRight) {
     alignmentOffset = self.bounds.size.width - textSize.width;
   } else if (_textAlignment == NSTextAlignmentCenter) {
-    alignmentOffset = NICenterX(self.bounds.size, textSize);
+    alignmentOffset = IGCenterX(self.bounds.size, textSize);
   }
 
   CGRect frame = CGRectMake(alignmentOffset, (originalFontHeight - shrunkenFontHeight) / 2,
                             textSize.width, textSize.height);
   if (self.contentVerticalAlignment == UIControlContentVerticalAlignmentCenter) {
-    frame.origin.y = NICenterY(metrics.boundingSize, frame.size);
+    frame.origin.y = IGCenterY(metrics.boundingSize, frame.size);
   }
   metrics.frame = frame;
   metrics.attributes = attributes;
